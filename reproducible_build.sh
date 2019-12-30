@@ -51,7 +51,7 @@ openwrt_download() {
 	pushd source
 	
 	# get lastest commit 
-       	git pull
+       	#git pull
 	
 	echo "================================================================================"
 	echo "$(date -u) - received git version $(git log -1 --pretty=oneline)"
@@ -83,14 +83,27 @@ openwrt_download() {
 }
 
 openwrt_build_toolchain() {
+	local RUN=$1
+
 	echo "============================================================================="
 	echo "$(date -u) - Building the toolchain."
 	echo "============================================================================="
 
 	OPTIONS=('-j' "$NUM_CPU" 'IGNORE_ERRORS=n m y' 'BUILD_LOG=1')
 
-	ionice -c 3 make "${OPTIONS[@]}" tools/install
-	ionice -c 3 make "${OPTIONS[@]}" toolchain/install
+	[ "$RUN" = "b1" ] && DATETIME=('last friday 5 pm')
+	[ "$RUN" = "b2" ] && DATETIME=('next friday 5 pm')
+
+	if [ "$RUN" = "b1" ] ; then
+		faketime -m "${DATETIME}" ionice -c 3 make "${OPTIONS[@]}" tools/install
+		faketime -m "${DATETIME}" ionice -c 3 make "${OPTIONS[@]}" toolchain/install
+	else
+		faketime -m "${DATETIME}" ionice -c 3 make "${OPTIONS[@]}" tools/install
+		faketime -m "${DATETIME}" ionice -c 3 make "${OPTIONS[@]}" toolchain/install
+	fi
+
+	#ionice -c 3 make "${OPTIONS[@]}" tools/install
+	#ionice -c 3 make "${OPTIONS[@]}" toolchain/install
 }
 
 # RUN - b1 or b2. b1 means first run, b2 second
@@ -102,25 +115,24 @@ openwrt_compile() {
 	OPTIONS=('-j' "$NUM_CPU" 'IGNORE_ERRORS=n m y' 'BUILD_LOG=1')
 
 	# make $RUN more human readable
-	[ "$RUN" = "b1" ] && RUN="first"
+	[ "$RUN" = "b1" ] && RUN="first" 
 	[ "$RUN" = "b2" ] && RUN="second"
         
 	OPENWRT_VERSION=$(git rev-parse --short HEAD)
 	echo "============================================================================="
 	echo "$(date -u) - Building OpenWrt ${OPENWRT_VERSION} ($TARGET) - $RUN build run."
 	echo "============================================================================="
-	ionice -c 3 $MAKE "${OPTIONS[@]}"
-}
 
-openwrt_combine() {
-	#combine compile toolchain and target
-	local RUN=$1
-	local TARGET=$2
+	[ "$RUN" = "b1" ] && DATETIME=('last friday 5 pm')
+	[ "$RUN" = "b2" ] && DATETIME=('next friday 5 pm')
 
-	openwrt_build_toolchain
-	# build images and packages
-	openwrt_compile "$RUN" "$TARGET"
+	if [ "$RUN" = "b1" ] ; then
+		faketime -m "${DATETIME}" ionice -c 3 $MAKE "${OPTIONS[@]}"
+	else
+		faketime -m "${DATETIME}" ionice -c 3 $MAKE "${OPTIONS[@]}"
+	fi
 
+	#ionice -c 3 $MAKE "${OPTIONS[@]}"
 }
 
 openwrt_config() {
@@ -169,15 +181,9 @@ openwrt_build() {
 	# set tz, date, core, ..
 	openwrt_apply_variations "$RUN"
 
-	#openwrt_build_toolchain
+	openwrt_build_toolchain "$RUN"
 	# build images and packages
-	#openwrt_compile "$RUN" "$TARGET"
-
-	if [ "$RUN" = "b1" ] ; then
-		faketime -m 'last friday 5 pm' openwrt_combine "$RUN" "$TARGET"	
-	else
-		faketime -m 'next friday 5 pm' openwrt_combine "$RUN" "$TARGET"
-	fi
+	openwrt_compile "$RUN" "$TARGET"
 
 	popd
 	if [ "$RUN" = "b1" ] ; then
