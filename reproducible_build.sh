@@ -139,11 +139,11 @@ openwrt_apply_variations() {
 
 	if [ "$RUN" = "b1" ] ; then
 		export TZ="/usr/share/zoneinfo/Etc/GMT+12"
-		# export FAKETIME="-14d"
+		export FAKETIME="+14d"
 		export MAKE=make
 	else
 		export TZ="/usr/share/zoneinfo/Etc/GMT-14"
-		export FAKETIME="-14d"
+		export FAKETIME="-0d"
 		export LANG="fr_CH.UTF-8"
 		export LC_ALL="fr_CH.UTF-8"
 		export PATH="/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/i/capture/the/path"
@@ -180,7 +180,8 @@ openwrt_recover_variations() {
 	export TZ="CST-8"
 	export FAKETIME="+0"
 	export LANG="en_HK.UTF-8"
-	export LC_ALL="en_HK.UTF-8"
+	unset LC_ALL
+	export PATH="/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games:"
 }
 
 openwrt_strip_and_save_result() {

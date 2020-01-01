@@ -201,7 +201,7 @@ cd "$TMPDIR"
 #touch result.txt 
 
 echo "=============================================================================" | tee -a result.txt
-echo "$(date -u) - OpenWrt ${OPENWRT_VERSION} ($TARGET) - Reproducible Result" | tee -a result.txt
+echo "$(date) - OpenWrt ${OPENWRT_VERSION} ($TARGET) - Reproducible Result" | tee -a result.txt
 echo "=============================================================================" | tee -a result.txt
 echo "ALL_IMAGES is $ALL_IMAGES, GOOD_IMAGES is $GOOD_IMAGES" | tee -a result.txt
 echo "ALL_PACKAGES is $ALL_PACKAGES, GOOD_PACKAGES is $GOOD_PACKAGES" | tee -a result.txt
