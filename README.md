@@ -6,7 +6,7 @@
 simliar target: ar71xx/brcm47xx/kirkwood/lantiq/mediatek/omap/ramips/sunxi/tegra/x86, you can choose any one of these.
  
 ***
-1.First we need to make sure the dependencies are installed (for Debian/Ubuntu):
+1. First we need to make sure the dependencies are installed (for Debian/Ubuntu):
 
   `sudo apt install subversion g++ zlib1g-dev build-essential git python python3`
   
