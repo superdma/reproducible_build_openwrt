@@ -6,7 +6,7 @@
 simliar target: ar71xx/brcm47xx/kirkwood/lantiq/mediatek/omap/ramips/sunxi/tegra/x86, you can choose any one of these.
  
 ***
-<a>First we need to make sure the dependencies are installed (for Debian/Ubuntu):
+1.need to make sure the dependencies are installed (for Debian/Ubuntu):
 
   `sudo apt install subversion g++ zlib1g-dev build-essential git python python3`
   
@@ -23,12 +23,11 @@ or for ubuntu 18.04 or later
   `sudo apt install build-essential libncursesw5-dev python unzip`   
 ***
 
-<b>avoid warning when we set LC_ALL
+2.avoid warning when we set LC_ALL
 
   `sudo apt-get install locales, locales-all`
 ***
-
-<c>install faketime for set env FAKETIME
+3.install faketime for set env FAKETIME
 
   `sudo apt-get install faketime`
   
@@ -37,7 +36,7 @@ or for ubuntu 18.04 or later
   modify `export LD_PRELOAD=/usr/lib/x86_64-linux-gnu/faketime/libfaketime.so.1` in script reproducible_build.sh
 ***
 
-<d>install compare tool diffoscope
+4.install compare tool diffoscope
 
   `sudo apt-get install diffoscope`
 ***
