@@ -25,7 +25,7 @@ or for ubuntu 18.04 or later
 
 2.avoid warning when we set LC_ALL
 
-  `sudo apt-get install locales, locales-all`
+  `sudo apt-get install locales locales-all`
 ***
 3.install faketime for set env FAKETIME
 
