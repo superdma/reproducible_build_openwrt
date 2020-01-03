@@ -48,7 +48,7 @@ openwrt_download() {
 	echo "================================================================================"
 	echo "$(date -u) - Cloning git repository from $OPENWRT_GIT_REPO $OPENWRT_GIT_BRANCH. "
 	echo "================================================================================"
-	#git clone -b "$OPENWRT_GIT_BRANCH" "$OPENWRT_GIT_REPO" source
+	git clone -b "$OPENWRT_GIT_BRANCH" "$OPENWRT_GIT_REPO" source
 	pushd source
 	
 	# get lastest commit 
@@ -139,11 +139,11 @@ openwrt_apply_variations() {
 
 	if [ "$RUN" = "b1" ] ; then
 		export TZ="/usr/share/zoneinfo/Etc/GMT+12"
-		export FAKETIME="+14d"
+		#export FAKETIME="+0d"
 		export MAKE=make
 	else
 		export TZ="/usr/share/zoneinfo/Etc/GMT-14"
-		export FAKETIME="-0d"
+		export FAKETIME="-378d"
 		export LANG="fr_CH.UTF-8"
 		export LC_ALL="fr_CH.UTF-8"
 		export PATH="/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/i/capture/the/path"
@@ -178,7 +178,7 @@ openwrt_build() {
 
 openwrt_recover_variations() {
 	export TZ="CST-8"
-	export FAKETIME="+0"
+	export FAKETIME="+0d"
 	export LANG="en_HK.UTF-8"
 	unset LC_ALL
 	export PATH="/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games:"
@@ -229,7 +229,7 @@ TARGET=$1
 ROOTDIR=$PWD
 
 mkdir -p "$TARGET"
-#cd "$TARGET"
+cd "$TARGET"
 
 openwrt_download $TARGET
 
