@@ -7,13 +7,12 @@ simliar target: ar71xx/brcm47xx/kirkwood/lantiq/mediatek/omap/ramips/sunxi/tegra
  
 ***  
 1. First we need to make sure the dependencies are installed (for Debian/Ubuntu):
-`
-sudo apt install subversion g++ zlib1g-dev build-essential git python python3
+`sudo apt install subversion g++ zlib1g-dev build-essential git python python3`
   
-sudo apt install libncurses5-dev gawk gettext unzip file libssl-dev wget
+`sudo apt install libncurses5-dev gawk gettext unzip file libssl-dev wget`
   
-sudo apt install libelf-dev ecj fastjar java-propose-classpath
-`
+`sudo apt install libelf-dev ecj fastjar java-propose-classpath`
+
 In addition for Debian 10:
 
 `sudo apt install python3-distutils`
