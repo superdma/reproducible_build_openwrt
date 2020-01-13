@@ -4,6 +4,7 @@ NUM_CPU=$(nproc)
 OPENWRT_GIT_REPO=https://git.openwrt.org/openwrt/openwrt.git
 OPENWRT_GIT_BRANCH=master
 
+export LD_PRELOAD=/usr/lib/x86_64-linux-gnu/faketime/libfaketime.so.1
 
 openwrt_create_signing_keys() {
 	echo "============================================================================="
@@ -51,7 +52,7 @@ openwrt_download() {
 	pushd source
 	
 	# get lastest commit 
-       	#git pull
+       	# git pull
 	
 	echo "================================================================================"
 	echo "$(date -u) - received git version $(git log -1 --pretty=oneline)"
@@ -83,7 +84,6 @@ openwrt_download() {
 }
 
 openwrt_build_toolchain() {
-	local RUN=$1
 
 	echo "============================================================================="
 	echo "$(date -u) - Building the toolchain."
@@ -91,19 +91,8 @@ openwrt_build_toolchain() {
 
 	OPTIONS=('-j' "$NUM_CPU" 'IGNORE_ERRORS=n m y' 'BUILD_LOG=1')
 
-	[ "$RUN" = "b1" ] && DATETIME=('last friday 5 pm')
-	[ "$RUN" = "b2" ] && DATETIME=('next friday 5 pm')
-
-	if [ "$RUN" = "b1" ] ; then
-		faketime -m "${DATETIME}" ionice -c 3 make "${OPTIONS[@]}" tools/install
-		faketime -m "${DATETIME}" ionice -c 3 make "${OPTIONS[@]}" toolchain/install
-	else
-		faketime -m "${DATETIME}" ionice -c 3 make "${OPTIONS[@]}" tools/install
-		faketime -m "${DATETIME}" ionice -c 3 make "${OPTIONS[@]}" toolchain/install
-	fi
-
-	#ionice -c 3 make "${OPTIONS[@]}" tools/install
-	#ionice -c 3 make "${OPTIONS[@]}" toolchain/install
+	ionice -c 3 $MAKE "${OPTIONS[@]}" tools/install
+	ionice -c 3 $MAKE "${OPTIONS[@]}" toolchain/install
 }
 
 # RUN - b1 or b2. b1 means first run, b2 second
@@ -123,16 +112,7 @@ openwrt_compile() {
 	echo "$(date -u) - Building OpenWrt ${OPENWRT_VERSION} ($TARGET) - $RUN build run."
 	echo "============================================================================="
 
-	[ "$RUN" = "b1" ] && DATETIME=('last friday 5 pm')
-	[ "$RUN" = "b2" ] && DATETIME=('next friday 5 pm')
-
-	if [ "$RUN" = "b1" ] ; then
-		faketime -m "${DATETIME}" ionice -c 3 $MAKE "${OPTIONS[@]}"
-	else
-		faketime -m "${DATETIME}" ionice -c 3 $MAKE "${OPTIONS[@]}"
-	fi
-
-	#ionice -c 3 $MAKE "${OPTIONS[@]}"
+	ionice -c 3 $MAKE "${OPTIONS[@]}"
 }
 
 openwrt_config() {
@@ -159,9 +139,11 @@ openwrt_apply_variations() {
 
 	if [ "$RUN" = "b1" ] ; then
 		export TZ="/usr/share/zoneinfo/Etc/GMT+12"
+		export FAKETIME="-14d"
 		export MAKE=make
 	else
 		export TZ="/usr/share/zoneinfo/Etc/GMT-14"
+		export FAKETIME="+14d"
 		export LANG="fr_CH.UTF-8"
 		export LC_ALL="fr_CH.UTF-8"
 		export PATH="/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/i/capture/the/path"
@@ -181,7 +163,7 @@ openwrt_build() {
 	# set tz, date, core, ..
 	openwrt_apply_variations "$RUN"
 
-	openwrt_build_toolchain "$RUN"
+	openwrt_build_toolchain 
 	# build images and packages
 	openwrt_compile "$RUN" "$TARGET"
 
@@ -192,6 +174,13 @@ openwrt_build() {
 	else
 		mv source source2
 	fi
+}
+
+openwrt_recover_variations() {
+	export TZ="CST-8"
+	export FAKETIME="0"
+	export LANG="en_HK.UTF-8"
+	export LC_ALL="en_HK.UTF-8"
 }
 
 openwrt_strip_and_save_result() {
@@ -245,6 +234,8 @@ openwrt_download $TARGET
 openwrt_build "b1" "$TARGET"
 
 openwrt_build "b2" "$TARGET"
+
+openwrt_recover_variations
 
 openwrt_strip_and_save_result
 
