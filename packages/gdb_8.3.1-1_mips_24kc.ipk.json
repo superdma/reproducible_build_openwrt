@@ -1,0 +1,65 @@
+{
+  "diffoscope-json-version": 1,
+  "source1": "/home/mazhao/reproducible_build_openwrt/ar71xx/b1/packages/mips_24kc/base/gdb_8.3.1-1_mips_24kc.ipk",
+  "source2": "/home/mazhao/reproducible_build_openwrt/ar71xx/b2/packages/mips_24kc/base/gdb_8.3.1-1_mips_24kc.ipk",
+  "unified_diff": null,
+  "details": [
+    {
+      "source1": "gdb_8.3.1-1_mips_24kc.ipk-content",
+      "source2": "gdb_8.3.1-1_mips_24kc.ipk-content",
+      "unified_diff": null,
+      "details": [
+        {
+          "source1": "file list",
+          "source2": "file list",
+          "unified_diff": "@@ -1,3 +1,3 @@\n -rw-r--r--   0 root         (0) root         (0)        4 2020-01-29 16:05:35.000000 ./debian-binary\n--rw-r--r--   0 root         (0) root         (0)  2021891 2020-01-29 16:05:35.000000 ./data.tar.gz\n+-rw-r--r--   0 root         (0) root         (0)  2021753 2020-01-29 16:05:35.000000 ./data.tar.gz\n -rw-r--r--   0 root         (0) root         (0)      574 2020-01-29 16:05:35.000000 ./control.tar.gz\n"
+        },
+        {
+          "source1": "./data.tar.gz",
+          "source2": "./data.tar.gz",
+          "unified_diff": null,
+          "details": [
+            {
+              "source1": "data.tar",
+              "source2": "data.tar",
+              "unified_diff": null,
+              "details": [
+                {
+                  "source1": "./usr/bin/gdb",
+                  "source2": "./usr/bin/gdb",
+                  "unified_diff": null,
+                  "details": [
+                    {
+                      "source1": "readelf --wide --program-header {}",
+                      "source2": "readelf --wide --program-header {}",
+                      "unified_diff": "@@ -5,15 +5,15 @@\n \n Program Headers:\n   Type           Offset   VirtAddr   PhysAddr   FileSiz MemSiz  Flg Align\n   PHDR           0x000034 0x00400034 0x00400034 0x00160 0x00160 R   0x4\n   INTERP         0x000194 0x00400194 0x00400194 0x0001a 0x0001a R   0x1\n       [Requesting program interpreter: /lib/ld-musl-mips-sf.so.1]\n   ABIFLAGS       0x0001b0 0x004001b0 0x004001b0 0x00018 0x00018 R   0x8\n-  LOAD           0x000000 0x00400000 0x00400000 0x3b7cb0 0x3b7cb0 R E 0x10000\n+  LOAD           0x000000 0x00400000 0x00400000 0x3b7c90 0x3b7c90 R E 0x10000\n   LOAD           0x3b8690 0x007c8690 0x007c8690 0x12380 0x2fd18 RW  0x10000\n   DYNAMIC        0x0001c8 0x004001c8 0x004001c8 0x00160 0x00160 R   0x4\n   TLS            0x3c3ecc 0x007d3ecc 0x007d3ecc 0x00000 0x00008 R   0x4\n-  GNU_EH_FRAME   0x344ccc 0x00744ccc 0x00744ccc 0x1693c 0x1693c R   0x4\n+  GNU_EH_FRAME   0x344cc0 0x00744cc0 0x00744cc0 0x1693c 0x1693c R   0x4\n   GNU_STACK      0x000000 0x00000000 0x00000000 0x00000 0x00000 RW  0x10\n   GNU_RELRO      0x3b8690 0x007c8690 0x007c8690 0x0c970 0x0c970 R   0x1\n   NULL           0x000000 0x00000000 0x00000000 0x00000 0x00000     0x4\n"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "source1": "./control.tar.gz",
+          "source2": "./control.tar.gz",
+          "unified_diff": null,
+          "details": [
+            {
+              "source1": "control.tar",
+              "source2": "control.tar",
+              "unified_diff": null,
+              "details": [
+                {
+                  "source1": "./control",
+                  "source2": "./control",
+                  "unified_diff": "@@ -2,11 +2,11 @@\n Version: 8.3.1-1\n Depends: libc, zlib, libreadline8, libncurses6, zlib\n Source: package/devel/gdb\n SourceName: gdb\n License: GPL-3.0+\n Section: devel\n Architecture: mips_24kc\n-Installed-Size: 2021891\n+Installed-Size: 2021753\n Description:  GDB, the GNU Project debugger, allows you to see what is going on `inside'\n  another program while it executes -- or what another program was doing at the\n  moment it crashed.\n"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
