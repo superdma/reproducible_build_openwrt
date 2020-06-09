@@ -48,7 +48,7 @@ openwrt_download() {
 	echo "================================================================================"
 	echo "$(date -u) - Cloning git repository from $OPENWRT_GIT_REPO $OPENWRT_GIT_BRANCH. "
 	echo "================================================================================"
-	git clone -b "$OPENWRT_GIT_BRANCH" "$OPENWRT_GIT_REPO" source
+	#git clone -b "$OPENWRT_GIT_BRANCH" "$OPENWRT_GIT_REPO" source
 	pushd source
 	
 	# get lastest commit 
@@ -80,13 +80,13 @@ openwrt_download() {
 	
 	echo -e "\nsave current openwrt state\n"
 	popd
-	rsync -av source/ source_backup/
+	rsync -a source/ source_backup/
 }
 
 openwrt_build_toolchain() {
 
 	echo "============================================================================="
-	echo "$(date -u) - Building the toolchain."
+	echo "$(LC_ALL=en_US.UTF-8 date -u) - Building the toolchain."
 	echo "============================================================================="
 
 	OPTIONS=('-j' "$NUM_CPU" 'IGNORE_ERRORS=n m y' 'BUILD_LOG=1')
@@ -109,7 +109,7 @@ openwrt_compile() {
         
 	OPENWRT_VERSION=$(git rev-parse --short HEAD)
 	echo "============================================================================="
-	echo "$(date -u) - Building OpenWrt ${OPENWRT_VERSION} ($TARGET) - $RUN build run."
+	echo "$(LC_ALL=en_US.UTF-8 date -u) - Building OpenWrt ${OPENWRT_VERSION} ($TARGET) - $RUN build run."
 	echo "============================================================================="
 
 	ionice -c 3 $MAKE "${OPTIONS[@]}"
@@ -143,13 +143,14 @@ openwrt_apply_variations() {
 		export MAKE=make
 	else
 		export TZ="/usr/share/zoneinfo/Etc/GMT-14"
-		export FAKETIME="-378d"
+		#export FAKETIME="-75d"
 		export LANG="fr_CH.UTF-8"
 		export LC_ALL="fr_CH.UTF-8"
 		export PATH="/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/i/capture/the/path"
 		export CAPTURE_ENVIRONMENT="I capture the environment"
 		# use allmost all cores for second build
-		export NEW_NUM_CPU=$(echo "$NUM_CPU-1" | bc)
+		# export NEW_NUM_CPU=$(echo "$NUM_CPU-1" | bc)
+		export NUM_CPU=$(echo "$NUM_CPU-0" | bc)
 		export MAKE=make
 	fi
 }
@@ -159,6 +160,12 @@ openwrt_build() {
 	local RUN=$1
 	local TARGET=$2
 	
+        #if [ "$RUN" = "b1" ] ; then
+	#	pushd source
+	#else
+	#	pushd source2
+	#fi
+
 	pushd source
 	# set tz, date, core, ..
 	openwrt_apply_variations "$RUN"
@@ -170,8 +177,11 @@ openwrt_build() {
 	popd
 	if [ "$RUN" = "b1" ] ; then
 		mv source source1
+		#mkdir source 
+		#disorderfs source_backup/ source/
 		mv source_backup source
 	else
+		echo -e "don't change source to source2"
 		mv source source2
 	fi
 }
@@ -179,7 +189,7 @@ openwrt_build() {
 openwrt_recover_variations() {
 	export TZ="CST-8"
 	export FAKETIME="+0d"
-	export LANG="en_HK.UTF-8"
+	export LANG="en_US.UTF-8"
 	unset LC_ALL
 	export PATH="/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games:"
 }
@@ -192,6 +202,7 @@ openwrt_strip_and_save_result() {
 	cd "$ROOTDIR"
 	echo -e "\nsave images and packages to b2\n"
 	source ./strip.sh $TARGET "source2" "b2"
+	#source ./strip.sh $TARGET "source" "b2"
 }
 
 calculate_reproducible_result() {
