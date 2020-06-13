@@ -6,7 +6,7 @@
 then</br>
   `bash reproducible_openwrt_build.sh ar71xx`</br>
 finally</br>
-  `bash reproducible_openwrt_build.sh ar71xx`</br>
+  `bash reproducible_openwrt_clean.sh ar71xx`</br>
 
 simliar target: ar71xx/brcm47xx/kirkwood/lantiq/mediatek/omap/ramips/sunxi/tegra/x86, you can choose any one of these.
  
