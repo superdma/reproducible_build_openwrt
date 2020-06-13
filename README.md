@@ -1,7 +1,7 @@
 <kdb>reproducible build shell script for openwrt</kdb>
 ***
 
-*USAGE:
+*USAGE:*
   `bash reproducible_openwrt_prepare.sh ar71xx`
 then
   `bash reproducible_openwrt_build.sh ar71xx`
