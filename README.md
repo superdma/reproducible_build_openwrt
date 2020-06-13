@@ -1,11 +1,11 @@
 <kdb>reproducible build shell script for openwrt</kdb>
 ***
 
-*USAGE:*
-  `bash reproducible_openwrt_prepare.sh ar71xx`
-then
+*USAGE:*</br>
+  `bash reproducible_openwrt_prepare.sh ar71xx`<br>
+then</br>
   `bash reproducible_openwrt_build.sh ar71xx`
-finally
+finally</br>
   `bash reproducible_openwrt_build.sh ar71xx`
 
 simliar target: ar71xx/brcm47xx/kirkwood/lantiq/mediatek/omap/ramips/sunxi/tegra/x86, you can choose any one of these.
