@@ -1,0 +1,70 @@
+{
+  "diffoscope-json-version": 1,
+  "source1": "/data/reproducible_build_openwrt/ar71xx/b1/packages/mips_24kc/base/uclibcxx_0.2.5-3_mips_24kc.ipk",
+  "source2": "/data/reproducible_build_openwrt/ar71xx/b2/packages/mips_24kc/base/uclibcxx_0.2.5-3_mips_24kc.ipk",
+  "unified_diff": null,
+  "details": [
+    {
+      "source1": "uclibcxx_0.2.5-3_mips_24kc.ipk-content",
+      "source2": "uclibcxx_0.2.5-3_mips_24kc.ipk-content",
+      "unified_diff": null,
+      "details": [
+        {
+          "source1": "file list",
+          "source2": "file list",
+          "unified_diff": "@@ -1,3 +1,3 @@\n -rw-r--r--   0 root         (0) root         (0)        4 2020-01-29 16:05:35.000000 ./debian-binary\n--rw-r--r--   0 root         (0) root         (0)    67640 2020-01-29 16:05:35.000000 ./data.tar.gz\n+-rw-r--r--   0 root         (0) root         (0)    67711 2020-01-29 16:05:35.000000 ./data.tar.gz\n -rw-r--r--   0 root         (0) root         (0)      474 2020-01-29 16:05:35.000000 ./control.tar.gz\n"
+        },
+        {
+          "source1": "./data.tar.gz",
+          "source2": "./data.tar.gz",
+          "unified_diff": null,
+          "details": [
+            {
+              "source1": "data.tar",
+              "source2": "data.tar",
+              "unified_diff": null,
+              "details": [
+                {
+                  "source1": "./usr/lib/libuClibc++-0.2.5.so",
+                  "source2": "./usr/lib/libuClibc++-0.2.5.so",
+                  "unified_diff": null,
+                  "details": [
+                    {
+                      "source1": "readelf --wide --program-header {}",
+                      "source2": "readelf --wide --program-header {}",
+                      "unified_diff": "@@ -2,14 +2,14 @@\n Elf file type is DYN (Shared object file)\n Entry point 0xeae0\n There are 8 program headers, starting at offset 52\n \n Program Headers:\n   Type           Offset   VirtAddr   PhysAddr   FileSiz MemSiz  Flg Align\n   ABIFLAGS       0x000138 0x00000138 0x00000138 0x00018 0x00018 R   0x8\n-  LOAD           0x000000 0x00000000 0x00000000 0x2baf8 0x2baf8 R E 0x10000\n+  LOAD           0x000000 0x00000000 0x00000000 0x2bb08 0x2bb08 R E 0x10000\n   LOAD           0x02c4f0 0x0003c4f0 0x0003c4f0 0x0250c 0x026ec RW  0x10000\n   DYNAMIC        0x000150 0x00000150 0x00000150 0x00118 0x00118 R   0x4\n-  GNU_EH_FRAME   0x026da0 0x00026da0 0x00026da0 0x00f6c 0x00f6c R   0x4\n+  GNU_EH_FRAME   0x026db0 0x00026db0 0x00026db0 0x00f6c 0x00f6c R   0x4\n   GNU_STACK      0x000000 0x00000000 0x00000000 0x00000 0x00000 RW  0x10\n   GNU_RELRO      0x02c4f0 0x0003c4f0 0x0003c4f0 0x01b10 0x01b10 R   0x1\n   NULL           0x000000 0x00000000 0x00000000 0x00000 0x00000     0x4\n"
+                    },
+                    {
+                      "source1": "readelf --wide --dynamic {}",
+                      "source2": "readelf --wide --dynamic {}",
+                      "unified_diff": "@@ -1,15 +1,15 @@\n \n Dynamic section at offset 0x150 contains 29 entries:\n   Tag        Type                         Name/Value\n  0x00000001 (NEEDED)                     Shared library: [libc.so]\n  0x00000001 (NEEDED)                     Shared library: [libgcc_s.so.1]\n  0x0000000e (SONAME)                     Library soname: [libuClibc++.so.0]\n  0x0000000c (INIT)                       0xea7c\n- 0x0000000d (FINI)                       0x256f0\n+ 0x0000000d (FINI)                       0x25710\n  0x00000019 (INIT_ARRAY)                 0x3cb68\n  0x0000001b (INIT_ARRAYSZ)               4 (bytes)\n  0x00000004 (HASH)                       0x268\n  0x00000005 (STRTAB)                     0x4fb8\n  0x00000006 (SYMTAB)                     0x1868\n  0x0000000a (STRSZ)                      25639 (bytes)\n  0x0000000b (SYMENT)                     16 (bytes)\n"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "source1": "./control.tar.gz",
+          "source2": "./control.tar.gz",
+          "unified_diff": null,
+          "details": [
+            {
+              "source1": "control.tar",
+              "source2": "control.tar",
+              "unified_diff": null,
+              "details": [
+                {
+                  "source1": "./control",
+                  "source2": "./control",
+                  "unified_diff": "@@ -2,9 +2,9 @@\n Version: 0.2.5-3\n Depends: libc\n Source: package/libs/uclibc++\n SourceName: uclibcxx\n License: LGPL-2.1-or-later\n Section: libs\n Architecture: mips_24kc\n-Installed-Size: 67640\n+Installed-Size: 67711\n Description:  C++ library for embedded systems\n"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
