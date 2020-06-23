@@ -29,21 +29,21 @@ call_diffoscope() {
 	( ulimit -v "$DIFFOSCOPE_VIRT_LIMIT"
 	  timeout "$TIMEOUT" \
 		diffoscope \
-			--html $TMPDIR/$1/$2.html \
+			--json $TMPDIR/$1/$2.json \
 			$TMPDIR/b1/$1/$2 \
 			$TMPDIR/b2/$1/$2 2>&1 \
 	) 2>&1 >> $TMPLOG
 	RESULT=$?
 	LOG_RESULT=$(grep '^E: 15binfmt: update-binfmts: unable to open' $TMPLOG || true)
 	if [ ! -z "$LOG_RESULT" ] ; then
-		rm -f $TMPLOG $TMPDIR/$1/$2.html
+		rm -f $TMPLOG $TMPDIR/$1/$2.json
 		echo "$(date -u) - diffoscope not available, will sleep 2min and retry."
 		sleep 2m
 		# remember to also modify the retry diffoscope call 15 lines above
 		( ulimit -v "$DIFFOSCOPE_VIRT_LIMIT"
 		  timeout "$TIMEOUT" \
 			diffoscope \
-				--html $TMPDIR/$1/$2.html \
+				--json $TMPDIR/$1/$2.json \
 				$TMPDIR/b1/$1/$2 \
 				$TMPDIR/b2/$1/$2 2>&1 \
 			) 2>&1 >> $TMPLOG
@@ -63,10 +63,10 @@ call_diffoscope() {
 			msg="$(date -u) - $DIFFOSCOPE had trouble comparing the two builds. Please investigate $1/$2"
 			;;
 		124)
-			if [ ! -s $TMPDIR/$1.html ] ; then
+			if [ ! -s $TMPDIR/$1.json ] ; then
 				msg="$(date -u) - $DIFFOSCOPE produced no output for $1/$2 and was killed after running into timeout after ${TIMEOUT}..."
 			else
-				msg="$DIFFOSCOPE was killed after running into timeout after $TIMEOUT, but there is still $TMPDIR/$1/$2.html"
+				msg="$DIFFOSCOPE was killed after running into timeout after $TIMEOUT, but there is still $TMPDIR/$1/$2.json"
 			fi
 			;;
 		*)
@@ -79,7 +79,7 @@ call_diffoscope() {
 			;;
 	esac
 	if [ ! -z "$msg" ] ; then
-		echo $msg | tee -a $TMPDIR/$1/$2.html
+		echo $msg | tee -a $TMPDIR/$1/$2.json
 	fi
 }
 
@@ -88,7 +88,7 @@ call_diffoscope() {
 #PACKAGE_NAME=$3
 #call_diffoscope "$PACKAGE_DIR" "$PACKAGE_NAME"
 
-remove -rf openwrt package images
+rm -rf openwrt package images
 VERSION=$1
 RESULTSDIR="$ROOTDIR/$1"
 TMPDIR="$RESULTSDIR"
@@ -132,12 +132,12 @@ for target in * ; do
 				echo "$(date -u) - targets/$target/$subtarget/$image is reproducible!"
 			fi
 			#get_filesize "$image"
-			if [ -f "$RESULTSDIR/targets/$target/$subtarget/$image.html" ] ; then
-				mv "$RESULTSDIR/targets/$target/$subtarget/$image.html" "$RESULTSDIR/images"
+			if [ -f "$RESULTSDIR/targets/$target/$subtarget/$image.json" ] ; then
+				mv "$RESULTSDIR/targets/$target/$subtarget/$image.json" "$RESULTSDIR/images"
 			else
 				#SHASUM=$(sha256sum "$image" |cut -d " " -f1)
 				let GOOD_IMAGES+=1
-				rm -f "$RESULTSDIR/targets/$target/$subtarget/$image.html" # cleanup from previous (unreproducible) tests - if needed
+				rm -f "$RESULTSDIR/targets/$target/$subtarget/$image.json" # cleanup from previous (unreproducible) tests - if needed
 			fi
 		done
 		cd ..
@@ -174,12 +174,12 @@ for i in * ; do
 		else
 			echo "$(date -u) - $i/$j is reproducible!"
 		fi
-		if [ -f "$RESULTSDIR/$i/$j.html" ] ; then
-			mv "$RESULTSDIR/$i/$j.html" "$RESULTSDIR/packages/"
+		if [ -f "$RESULTSDIR/$i/$j.json" ] ; then
+			mv "$RESULTSDIR/$i/$j.json" "$RESULTSDIR/packages/"
 		else
 			#SHASUM=$(sha256sum "$j" |cut -d " " -f1)
 			let GOOD_PACKAGES+=1
-			rm -f "$RESULTSDIR/$i/$j.html" # cleanup from previous (unreproducible) tests - if needed
+			rm -f "$RESULTSDIR/$i/$j.json" # cleanup from previous (unreproducible) tests - if needed
 		fi
 	done
 	cd ..
@@ -207,3 +207,4 @@ echo "ALL_IMAGES is $ALL_IMAGES, GOOD_IMAGES is $GOOD_IMAGES" | tee -a result.tx
 echo "ALL_PACKAGES is $ALL_PACKAGES, GOOD_PACKAGES is $GOOD_PACKAGES" | tee -a result.txt
 echo "$GOOD_PERCENT_IMAGES% images and $GOOD_PERCENT_PACKAGES% packages is reproducible in current test framework." |tee -a result.txt
 
+#cat result.txt
